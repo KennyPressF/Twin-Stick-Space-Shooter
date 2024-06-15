@@ -13,6 +13,7 @@ public class PlayerCombat : MonoBehaviour
     private void Awake()
     {
         playerInput = new PlayerInputActions();
+        objectPool = GetComponent<ObjectPool>();
     }
 
     private void OnEnable()

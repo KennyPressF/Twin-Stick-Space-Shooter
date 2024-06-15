@@ -6,6 +6,7 @@ public class ObjectPool : MonoBehaviour
 {
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] int startingPoolSize = 10;
+    [SerializeField] Transform poolParentGameObject;
     private Queue<GameObject> poolQueue;
 
     void Start()
@@ -13,7 +14,7 @@ public class ObjectPool : MonoBehaviour
         poolQueue = new Queue<GameObject>();
         for (int i = 0; i < startingPoolSize; i++)
         {
-            GameObject obj = Instantiate(projectilePrefab);
+            GameObject obj = Instantiate(projectilePrefab, poolParentGameObject);
             obj.SetActive(false);
             poolQueue.Enqueue(obj);
         }
@@ -21,18 +22,21 @@ public class ObjectPool : MonoBehaviour
 
     public GameObject GetObject()
     {
+        GameObject obj;
+
         if (poolQueue.Count > 0)
         {
-            GameObject obj = poolQueue.Dequeue();
+            obj = poolQueue.Dequeue();
             obj.SetActive(true);
-            return obj;
         }
         else
         {
-            GameObject obj = Instantiate(projectilePrefab);
+            obj = Instantiate(projectilePrefab, poolParentGameObject);
             obj.SetActive(true);
-            return obj;
         }
+
+        obj.GetComponent<Projectile>().Initialize(this);
+        return obj;
     }
 
     public void ReturnObject(GameObject obj)

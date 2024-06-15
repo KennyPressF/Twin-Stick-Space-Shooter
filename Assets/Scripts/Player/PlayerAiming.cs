@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,9 @@ public class PlayerAiming : PlayerInputManager
 
     private Vector2 inputAimDir;
     private Quaternion aimDirection;
-    public Quaternion AimDirection { get => aimDirection; }
+    public Vector3 AimDirection { get => aimDirection.eulerAngles; set { aimDirection = Quaternion.Euler(value); OnAimDirectionChanged?.Invoke(value); } }
+
+    public event Action<Vector3> OnAimDirectionChanged;
 
     protected override void OnEnable()
     {
@@ -48,7 +51,7 @@ public class PlayerAiming : PlayerInputManager
         if (inputAimDir.magnitude > 0.5f)
         {
             float angle = Mathf.Atan2(inputAimDir.x, inputAimDir.y) * Mathf.Rad2Deg;
-            aimDirection = Quaternion.Euler(new Vector3(0f, 0f, -angle)); //Angle here needs to be negative
+            AimDirection = new Vector3(0f, 0f, -angle); //Angle here needs to be negative
 
         }
     }
@@ -62,7 +65,7 @@ public class PlayerAiming : PlayerInputManager
             Vector3 direction = mouseWorldPosition - bodySprite.transform.position;
 
             float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-            aimDirection = Quaternion.Euler(new Vector3(0, 0, -angle)); //Angle here needs to be negative
+            AimDirection = new Vector3(0f, 0f, -angle); //Angle here needs to be negative
         }
     }
 }

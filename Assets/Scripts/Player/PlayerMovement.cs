@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : PlayerInputManager
 {
-    [SerializeField] float moveSpeed;
+    public float baseSpeed;
+    float speedVariable = 1f;
 
     Vector2 moveInputValue;
 
@@ -14,12 +15,14 @@ public class PlayerMovement : PlayerInputManager
         base.OnEnable();
         base.PlayerInput.Player.Move.performed += OnMovePerformed;
         base.PlayerInput.Player.Move.canceled += OnMoveCanceled;
+        Player.Instance.OnMoveSpeedChanged += UpdateBaseMoveSpeed;
     }
 
     protected override void OnDisable()
     {
         base.PlayerInput.Player.Move.performed -= OnMovePerformed;
         base.PlayerInput.Player.Move.canceled -= OnMoveCanceled;
+        Player.Instance.OnMoveSpeedChanged -= UpdateBaseMoveSpeed;
         base.OnDisable();
     }
 
@@ -35,7 +38,13 @@ public class PlayerMovement : PlayerInputManager
 
     private void FixedUpdate()
     {
+        float moveSpeed = baseSpeed * speedVariable;
         Vector3 moveDir = new Vector3(moveInputValue.x, moveInputValue.y, 0);
         transform.Translate(moveDir * moveSpeed * Time.deltaTime);
+    }
+
+    private void UpdateBaseMoveSpeed(float newBaseSpeed)
+    {
+        baseSpeed = newBaseSpeed;
     }
 }

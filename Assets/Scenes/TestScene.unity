@@ -591,7 +591,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cac06706a488e441bbdb2a24aa0aa04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
 --- !u!114 &1534307820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,6 +646,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f0541d5a53f7f4590c35d0a493ac1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 0
+  <ProjectileDamage>k__BackingField: 5
+  <ProjectileRange>k__BackingField: 1
+  <ProjectileSpeed>k__BackingField: 10
 --- !u!114 &1534307824
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float moveSpeed;
-    public float lifeTime;
+    [SerializeField] float damageValue;
+    [SerializeField] float moveSpeed;
+    [SerializeField] float lifeTime;
 
     private Rigidbody2D rigidBody;
     private ObjectPool objectPool;
@@ -18,12 +19,24 @@ public class Projectile : MonoBehaviour
     public void Initialize(ObjectPool op)
     {
         objectPool = op;
+    }
+
+    private void OnEnable()
+    {
+        damageValue = Player.Instance.ProjectileDamage;
+        moveSpeed = Player.Instance.ProjectileSpeed;
+        lifeTime = Player.Instance.ProjectileRange;
         ProcessShot();
     }
 
     private void ProcessShot()
     {
-        rigidBody.velocity = transform.up * moveSpeed; //Need to sort out direction here, also need to not allow continuous firing!
+        // Calculate shot direction
+        float angle = Player.Instance.AimDirection.z;
+        float angleRad = -angle * Mathf.Deg2Rad;
+        Vector2 travelDir = new Vector2(Mathf.Sin(angleRad), Mathf.Cos(angleRad)).normalized;
+
+        rigidBody.velocity = travelDir * moveSpeed;
 
         StartCoroutine(ProcessBulletLifetime());
     }

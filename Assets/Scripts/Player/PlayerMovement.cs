@@ -3,31 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : PlayerInputManager
 {
     [SerializeField] float moveSpeed;
 
     Vector2 moveInputValue;
 
-    PlayerInputActions playerInput;
-
-    private void Awake()
+    protected override void OnEnable()
     {
-        playerInput = new PlayerInputActions();
+        base.OnEnable();
+        base.PlayerInput.Player.Move.performed += OnMovePerformed;
+        base.PlayerInput.Player.Move.canceled += OnMoveCanceled;
     }
 
-    private void OnEnable()
+    protected override void OnDisable()
     {
-        playerInput.Player.Enable();
-        playerInput.Player.Move.performed += OnMovePerformed;
-        playerInput.Player.Move.canceled += OnMoveCanceled;
-    }
-
-    private void OnDisable()
-    {
-        playerInput.Player.Move.performed -= OnMovePerformed;
-        playerInput.Player.Move.canceled -= OnMoveCanceled;
-        playerInput.Player.Disable();
+        base.PlayerInput.Player.Move.performed -= OnMovePerformed;
+        base.PlayerInput.Player.Move.canceled -= OnMoveCanceled;
+        base.OnDisable();
     }
 
     private void OnMovePerformed(InputAction.CallbackContext context)

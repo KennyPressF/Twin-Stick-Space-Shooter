@@ -3,33 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerCombat : MonoBehaviour
+public class PlayerCombat : PlayerInputManager
 {
     [SerializeField] Transform firePoint;
     [SerializeField] float fireRate;
     private bool isShooting;
 
     ObjectPool objectPool;
-    PlayerInputActions playerInput;
 
-    private void Awake()
+    private void Start()
     {
-        playerInput = new PlayerInputActions();
         objectPool = GetComponent<ObjectPool>();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
-        playerInput.Enable();
-        playerInput.Player.Shoot.performed += OnShootStarted;
-        playerInput.Player.Shoot.canceled += OnShootCanceled;
+        base.OnEnable();
+        base.PlayerInput.Player.Shoot.performed += OnShootStarted;
+        base.PlayerInput.Player.Shoot.canceled += OnShootCanceled;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
-        playerInput.Disable();
-        playerInput.Player.Shoot.performed -= OnShootStarted;
-        playerInput.Player.Shoot.canceled -= OnShootCanceled;
+        base.PlayerInput.Player.Shoot.performed -= OnShootStarted;
+        base.PlayerInput.Player.Shoot.canceled -= OnShootCanceled;
+        base.OnDisable();
     }
 
     void OnShootStarted(InputAction.CallbackContext context)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerAiming : MonoBehaviour
+public class PlayerAiming : PlayerInputManager
 {
     [SerializeField] GameObject bodySprite;
     [SerializeField] float rotationSpeed;
@@ -12,23 +12,16 @@ public class PlayerAiming : MonoBehaviour
     private Quaternion aimDirection;
     public Quaternion AimDirection { get => aimDirection; }
 
-    PlayerInputActions playerInput;
-
-    private void Awake()
+    protected override void OnEnable()
     {
-        playerInput = new PlayerInputActions();
+        base.OnEnable();
+        base.PlayerInput.Player.Look.performed += OnLookPerformed;
     }
 
-    private void OnEnable()
+    protected override void OnDisable()
     {
-        playerInput.Enable();
-        playerInput.Player.Look.performed += OnLookPerformed;
-    }
-
-    private void OnDisable()
-    {
-        playerInput.Disable();
-        playerInput.Player.Look.performed -= OnLookPerformed;
+        base.PlayerInput.Player.Look.performed -= OnLookPerformed;
+        base.OnDisable();
     }
 
     private void Update()

@@ -7,6 +7,7 @@ public class PlayerCombat : PlayerInputManager
 {
     [SerializeField] Transform firePoint;
     [SerializeField] float fireRate;
+    float lastShootTime = 0f;
     private bool isShooting;
 
     ObjectPool objectPool;
@@ -45,7 +46,11 @@ public class PlayerCombat : PlayerInputManager
     {
         while (isShooting)
         {
-            SpawnProjectile();
+            if (Time.time >= lastShootTime + fireRate)
+            {
+                SpawnProjectile();
+                lastShootTime = Time.time;
+            }
             yield return new WaitForSeconds(fireRate);
         }
     }

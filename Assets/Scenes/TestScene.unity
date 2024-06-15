@@ -426,7 +426,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1380520609
+--- !u!1 &1420932526
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -434,28 +434,28 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1380520610}
+  - component: {fileID: 1420932527}
   m_Layer: 0
-  m_Name: Object Pool
+  m_Name: Object Pool Group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1380520610
+--- !u!4 &1420932527
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1380520609}
+  m_GameObject: {fileID: 1420932526}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1534307818}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1484756663
 GameObject:
@@ -575,7 +575,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 418349498}
-  - {fileID: 1380520610}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1534307819
@@ -617,8 +616,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77908b6aca62ee04390a53b523646272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 825724583536339, guid: 90f45ad67820a5d449b34a3a67ffd37d, type: 3}
-  startingPoolSize: 10
+  projectilePrefab: {fileID: 6457340262126980326, guid: a815320ba3d20b54a946f7a904f5e1fc, type: 3}
+  startingPoolSize: 1
+  poolParentGameObject: {fileID: 1420932527}
 --- !u!114 &1534307822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -632,6 +632,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 1484756664}
+  fireRate: 0.4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -639,3 +640,4 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 1534307818}
+  - {fileID: 1420932527}

@@ -5,7 +5,7 @@ using UnityEngine;
 public class ObjectPool : MonoBehaviour
 {
     [SerializeField] GameObject projectilePrefab;
-    [SerializeField] int startingPoolSize = 10;
+    [SerializeField] int startingPoolSize;
     [SerializeField] Transform poolParentGameObject;
     private Queue<GameObject> poolQueue;
 
@@ -22,21 +22,20 @@ public class ObjectPool : MonoBehaviour
 
     public GameObject GetObject()
     {
-        GameObject obj;
-
         if (poolQueue.Count > 0)
         {
-            obj = poolQueue.Dequeue();
+            GameObject obj = poolQueue.Dequeue();
             obj.SetActive(true);
+            obj.GetComponent<Projectile>().Initialize(this);
+            return obj;
         }
         else
         {
-            obj = Instantiate(projectilePrefab, poolParentGameObject);
+            GameObject obj = Instantiate(projectilePrefab, poolParentGameObject);
             obj.SetActive(true);
+            obj.GetComponent<Projectile>().Initialize(this);
+            return obj;
         }
-
-        obj.GetComponent<Projectile>().Initialize(this);
-        return obj;
     }
 
     public void ReturnObject(GameObject obj)

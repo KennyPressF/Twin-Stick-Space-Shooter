@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] Transform firePoint;
+    [SerializeField] float fireRate;
+    private bool isShooting;
 
     ObjectPool objectPool;
     PlayerInputActions playerInput;
@@ -19,18 +21,35 @@ public class PlayerCombat : MonoBehaviour
     private void OnEnable()
     {
         playerInput.Enable();
-        playerInput.Player.Shoot.performed += OnShootPerformed;
+        playerInput.Player.Shoot.performed += OnShootStarted;
+        playerInput.Player.Shoot.canceled += OnShootCanceled;
     }
 
     private void OnDisable()
     {
         playerInput.Disable();
-        playerInput.Player.Shoot.performed -= OnShootPerformed;
+        playerInput.Player.Shoot.performed -= OnShootStarted;
+        playerInput.Player.Shoot.canceled -= OnShootCanceled;
     }
 
-    void OnShootPerformed(InputAction.CallbackContext context)
+    void OnShootStarted(InputAction.CallbackContext context)
     {
-        SpawnProjectile();
+        isShooting = true;
+        StartCoroutine(ContinuousShoot());
+    }
+
+    void OnShootCanceled(InputAction.CallbackContext context)
+    {
+        isShooting = false;
+    }
+
+    IEnumerator ContinuousShoot()
+    {
+        while (isShooting)
+        {
+            SpawnProjectile();
+            yield return new WaitForSeconds(fireRate);
+        }
     }
 
     void SpawnProjectile()

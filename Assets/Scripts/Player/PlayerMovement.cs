@@ -10,12 +10,10 @@ public class PlayerMovement : MonoBehaviour
     Vector2 moveInputValue;
 
     PlayerInputActions playerInput;
-    Rigidbody2D rigidBody;
 
     private void Awake()
     {
         playerInput = new PlayerInputActions();
-        rigidBody = GetComponent<Rigidbody2D>();
     }
 
     private void OnEnable()

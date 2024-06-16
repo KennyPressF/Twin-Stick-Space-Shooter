@@ -13,6 +13,7 @@ public class PlayerAiming : PlayerInputManager
     private Quaternion aimDirection;
     public Vector3 AimDirection { get => aimDirection.eulerAngles; set { aimDirection = Quaternion.Euler(value); OnAimDirectionChanged?.Invoke(value); } }
 
+    //Event to update the direction in the singleton Player class
     public event Action<Vector3> OnAimDirectionChanged;
 
     protected override void OnEnable()

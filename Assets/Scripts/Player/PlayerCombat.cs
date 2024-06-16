@@ -57,8 +57,9 @@ public class PlayerCombat : PlayerInputManager
 
     void SpawnProjectile()
     {
-        GameObject projectile = objectPool.GetObject();
+        Projectile projectile = objectPool.GetObject();
         projectile.transform.position = firePoint.position;
         projectile.transform.rotation = firePoint.rotation;
+        projectile.ProcessShot();
     }
 }

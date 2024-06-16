@@ -10,7 +10,7 @@ public class Player : SingletonMonobehaviour<Player>
     // Movement
     public event Action<float> OnMoveSpeedChanged;
     [SerializeField] float moveSpeed;
-    private float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; OnMoveSpeedChanged?.Invoke(value); } }
+    public float MoveSpeed { get { return moveSpeed; } private set { moveSpeed = value; OnMoveSpeedChanged?.Invoke(value); } }
 
     // Combat
     [field: SerializeField] public float ProjectileDamage { get; private set; }
@@ -53,11 +53,17 @@ public class Player : SingletonMonobehaviour<Player>
     {
         AimDirection = newDirection;
     }
+
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             MoveSpeed++;
         }
+    }
+
+    public void TEST()
+    {
+        Debug.Log("TEST");
     }
 }

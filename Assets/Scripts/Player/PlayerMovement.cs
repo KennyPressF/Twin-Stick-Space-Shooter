@@ -5,10 +5,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : PlayerInputManager
 {
-    public float baseSpeed;
+    float baseSpeed;
     float speedVariable = 1f;
 
     Vector2 moveInputValue;
+
+    private void Start()
+    {
+        baseSpeed = Player.Instance.MoveSpeed;
+    }
 
     protected override void OnEnable()
     {

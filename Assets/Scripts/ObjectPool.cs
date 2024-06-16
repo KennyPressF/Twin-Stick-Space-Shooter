@@ -7,40 +7,49 @@ public class ObjectPool : MonoBehaviour
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] int startingPoolSize;
     [SerializeField] Transform poolParentGameObject;
-    private Queue<GameObject> poolQueue;
+    private Queue<Projectile> poolQueue;
+
+    Player player;
+
+    private void Awake()
+    {
+        player = GetComponent<Player>();
+    }
 
     void Start()
     {
-        poolQueue = new Queue<GameObject>();
+        poolQueue = new Queue<Projectile>();
         for (int i = 0; i < startingPoolSize; i++)
         {
             GameObject obj = Instantiate(projectilePrefab, poolParentGameObject);
+            Projectile proj = obj.GetComponent<Projectile>();
+            proj.Initialize(player, this);
             obj.SetActive(false);
-            poolQueue.Enqueue(obj);
+            poolQueue.Enqueue(proj);
         }
     }
 
-    public GameObject GetObject()
+    public Projectile GetObject()
     {
         if (poolQueue.Count > 0)
         {
-            GameObject obj = poolQueue.Dequeue();
-            obj.SetActive(true);
-            obj.GetComponent<Projectile>().Initialize(this);
-            return obj;
+            Projectile proj = poolQueue.Dequeue();
+            proj.gameObject.SetActive(true);
+            return proj;
         }
         else
         {
             GameObject obj = Instantiate(projectilePrefab, poolParentGameObject);
+            Projectile proj = obj.GetComponent<Projectile>();
+            proj.Initialize(player, this);
             obj.SetActive(true);
-            obj.GetComponent<Projectile>().Initialize(this);
-            return obj;
+            return proj;
         }
     }
 
-    public void ReturnObject(GameObject obj)
+    public void ReturnObject(Projectile proj)
     {
-        obj.SetActive(false);
-        poolQueue.Enqueue(obj);
+        proj.gameObject.SetActive(false);
+        poolQueue.Enqueue(proj);
     }
 }

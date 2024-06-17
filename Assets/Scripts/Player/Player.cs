@@ -61,9 +61,4 @@ public class Player : SingletonMonobehaviour<Player>
             MoveSpeed++;
         }
     }
-
-    public void TEST()
-    {
-        Debug.Log("TEST");
-    }
 }

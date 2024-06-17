@@ -33,7 +33,7 @@ public class Projectile : MonoBehaviour
         lifeTime = player.ProjectileRange;
 
         // Calculate shot direction
-        float angle = Player.Instance.AimDirection.z;
+        float angle = player.AimDirection.z;
         float angleRad = -angle * Mathf.Deg2Rad;
         Vector2 travelDir = new Vector2(Mathf.Sin(angleRad), Mathf.Cos(angleRad)).normalized;
 

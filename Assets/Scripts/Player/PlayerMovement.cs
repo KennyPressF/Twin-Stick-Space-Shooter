@@ -20,6 +20,7 @@ public class PlayerMovement : PlayerInputManager
         base.OnEnable();
         base.PlayerInput.Player.Move.performed += OnMovePerformed;
         base.PlayerInput.Player.Move.canceled += OnMoveCanceled;
+        base.PlayerInput.Player.Dash.started += OnDashStarted;
         Player.Instance.OnMoveSpeedChanged += UpdateBaseMoveSpeed;
     }
 
@@ -27,6 +28,7 @@ public class PlayerMovement : PlayerInputManager
     {
         base.PlayerInput.Player.Move.performed -= OnMovePerformed;
         base.PlayerInput.Player.Move.canceled -= OnMoveCanceled;
+        base.PlayerInput.Player.Dash.canceled += OnDashCanceled;
         Player.Instance.OnMoveSpeedChanged -= UpdateBaseMoveSpeed;
         base.OnDisable();
     }
@@ -39,6 +41,16 @@ public class PlayerMovement : PlayerInputManager
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
         moveInputValue = Vector2.zero;
+    }
+
+    private void OnDashStarted(InputAction.CallbackContext context)
+    {
+        Debug.Log("Dash started");
+    }
+
+    private void OnDashCanceled(InputAction.CallbackContext context)
+    {
+        Debug.Log("Dash canceled");
     }
 
     private void FixedUpdate()

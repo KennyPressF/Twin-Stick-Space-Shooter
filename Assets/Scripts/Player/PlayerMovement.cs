@@ -10,9 +10,17 @@ public class PlayerMovement : PlayerInputManager
 
     Vector2 moveInputValue;
 
+    Player player;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        player = GetComponent<Player>();
+    }
+
     private void Start()
     {
-        baseSpeed = Player.Instance.MoveSpeed;
+        baseSpeed = player.MoveSpeed;
     }
 
     protected override void OnEnable()
@@ -21,16 +29,16 @@ public class PlayerMovement : PlayerInputManager
         base.PlayerInput.Player.Move.performed += OnMovePerformed;
         base.PlayerInput.Player.Move.canceled += OnMoveCanceled;
         base.PlayerInput.Player.Dash.started += OnDashStarted;
-        Player.Instance.OnMoveSpeedChanged += UpdateBaseMoveSpeed;
+        player.OnMoveSpeedChanged += UpdateBaseMoveSpeed;
     }
 
     protected override void OnDisable()
     {
         base.PlayerInput.Player.Move.performed -= OnMovePerformed;
         base.PlayerInput.Player.Move.canceled -= OnMoveCanceled;
-        base.PlayerInput.Player.Dash.canceled += OnDashCanceled;
-        Player.Instance.OnMoveSpeedChanged -= UpdateBaseMoveSpeed;
+        base.PlayerInput.Player.Dash.canceled -= OnDashCanceled;
         base.OnDisable();
+        player.OnMoveSpeedChanged -= UpdateBaseMoveSpeed;
     }
 
     private void OnMovePerformed(InputAction.CallbackContext context)

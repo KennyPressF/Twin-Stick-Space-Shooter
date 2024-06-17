@@ -6,7 +6,7 @@ public class PlayerInputManager : MonoBehaviour
 {
     protected PlayerInputActions PlayerInput;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         PlayerInput = new PlayerInputActions();
     }

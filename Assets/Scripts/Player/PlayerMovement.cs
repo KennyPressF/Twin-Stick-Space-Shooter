@@ -6,11 +6,12 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : PlayerInputManager
 {
     float baseSpeed;
-    public float speedVariable;
+    float speedVariable;
     [SerializeField] float currentStamina;
     [SerializeField] float maxStamina;
     [SerializeField] float staminaRegenRate;
     [SerializeField] float staminaDepletionRate;
+    [SerializeField] float dashSpeed;
     bool isDashing = false;
 
     // Current stamina variable
@@ -106,7 +107,7 @@ public class PlayerMovement : PlayerInputManager
 
         if (isDashing)
         {
-            speedVariable = 2f;
+            speedVariable = dashSpeed;
             currentStamina -= staminaDepletionRate * Time.deltaTime;
         }
         else

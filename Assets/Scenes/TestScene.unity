@@ -313,7 +313,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -595,6 +595,7 @@ MonoBehaviour:
   maxStamina: 10
   staminaRegenRate: 1.5
   staminaDepletionRate: 3
+  dashSpeed: 2
 --- !u!114 &1534307820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -637,7 +638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 1484756664}
-  fireRate: 0.4
+  fireRate: 0.25
 --- !u!114 &1534307823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -652,8 +653,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   <ProjectileDamage>k__BackingField: 5
-  <ProjectileRange>k__BackingField: 1
-  <ProjectileSpeed>k__BackingField: 10
+  <ProjectileRange>k__BackingField: 0.25
+  <ProjectileSpeed>k__BackingField: 20
 --- !u!114 &1534307824
 MonoBehaviour:
   m_ObjectHideFlags: 0

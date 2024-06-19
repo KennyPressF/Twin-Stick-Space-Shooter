@@ -11,29 +11,31 @@ public class Projectile : MonoBehaviour
     private Rigidbody2D rigidBody;
     private ObjectPool objectPool;
 
-    Player player;
+    PlayerCombat playerCombat;
+    PlayerAiming playerAiming;
 
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
     }
 
-    public void Initialize(Player playerComp, ObjectPool op)
+    public void Initialize(PlayerCombat playerCom, PlayerAiming playerAim, ObjectPool op)
     {
         //Set references when projectile is created and added to pool
-        player = playerComp;
+        playerCombat = playerCom;
+        playerAiming = playerAim;
         objectPool = op;
     }
 
     public void ProcessShot()
     {
         // Set values
-        damageValue = player.ProjectileDamage;
-        moveSpeed = player.ProjectileSpeed;
-        lifeTime = player.ProjectileRange;
+        damageValue = playerCombat.ProjectileDamage;
+        moveSpeed = playerCombat.ProjectileSpeed;
+        lifeTime = playerCombat.ProjectileRange;
 
         // Calculate shot direction
-        float angle = player.AimDirection.z;
+        float angle = playerAiming.AimDirection.z;
         float angleRad = -angle * Mathf.Deg2Rad;
         Vector2 travelDir = new Vector2(Mathf.Sin(angleRad), Mathf.Cos(angleRad)).normalized;
 
@@ -50,8 +52,11 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<IDamageable>() != null)
+        IDamageable damageComp = collision.GetComponent<IDamageable>();
+
+        if (damageComp != null)
         {
+            damageComp.TakeDamage(damageValue);
             objectPool.ReturnObject(this);
         }
     }

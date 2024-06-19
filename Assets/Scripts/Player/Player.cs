@@ -33,32 +33,32 @@ public class Player : SingletonMonobehaviour<Player>
         playerCombat = GetComponent<PlayerCombat>();
     }
 
-    private void OnEnable()
-    {
-        if (playerAiming != null)
-        {
-            playerAiming.OnAimDirectionChanged += UpdateDirection;
-        }
-    }
+    //private void OnEnable()
+    //{
+    //    if (playerAiming != null)
+    //    {
+    //        playerAiming.OnAimDirectionChanged += UpdateDirection;
+    //    }
+    //}
 
-    private void OnDisable()
-    {
-        if (playerAiming != null)
-        {
-            playerAiming.OnAimDirectionChanged -= UpdateDirection;
-        }
-    }
+    //private void OnDisable()
+    //{
+    //    if (playerAiming != null)
+    //    {
+    //        playerAiming.OnAimDirectionChanged -= UpdateDirection;
+    //    }
+    //}
 
-    private void UpdateDirection(Vector3 newDirection)
-    {
-        AimDirection = newDirection;
-    }
+    //private void UpdateDirection(Vector3 newDirection)
+    //{
+    //    AimDirection = newDirection;
+    //}
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            MoveSpeed++;
-        }
-    }
+    //private void Update()
+    //{
+    //    if(Input.GetKeyDown(KeyCode.Escape))
+    //    {
+    //        MoveSpeed++;
+    //    }
+    //}
 }

@@ -10,6 +10,13 @@ public class PlayerCombat : PlayerInputManager
     float lastShootTime = 0f;
     private bool isShooting;
 
+    [SerializeField] float projectileDamage;
+    public float ProjectileDamage { get { return projectileDamage; } private set { projectileDamage = value; } }
+    [SerializeField] float projectileRange;
+    public float ProjectileRange { get { return projectileRange; } private set { projectileRange = value; } }
+    [SerializeField] float projectileSpeed;
+    public float ProjectileSpeed { get { return projectileSpeed; } private set { projectileSpeed = value; } }
+
     ObjectPool objectPool;
 
     private void Start()

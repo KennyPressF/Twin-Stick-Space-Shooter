@@ -9,11 +9,13 @@ public class ObjectPool : MonoBehaviour
     [SerializeField] Transform poolParentGameObject;
     private Queue<Projectile> poolQueue;
 
-    Player player;
+    PlayerCombat playerCombat;
+    PlayerAiming playerAiming;
 
     private void Awake()
     {
-        player = GetComponent<Player>();
+        playerCombat = GetComponent<PlayerCombat>();
+        playerAiming = GetComponent<PlayerAiming>();
     }
 
     void Start()
@@ -23,7 +25,7 @@ public class ObjectPool : MonoBehaviour
         {
             GameObject obj = Instantiate(projectilePrefab, poolParentGameObject);
             Projectile proj = obj.GetComponent<Projectile>();
-            proj.Initialize(player, this);
+            proj.Initialize(playerCombat, playerAiming, this);
             obj.SetActive(false);
             poolQueue.Enqueue(proj);
         }
@@ -41,7 +43,7 @@ public class ObjectPool : MonoBehaviour
         {
             GameObject obj = Instantiate(projectilePrefab, poolParentGameObject);
             Projectile proj = obj.GetComponent<Projectile>();
-            proj.Initialize(player, this);
+            proj.Initialize(playerCombat, playerAiming, this);
             obj.SetActive(true);
             return proj;
         }

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : PlayerInputManager
 {
-    float baseSpeed;
+    [SerializeField] float baseSpeed;
     float speedVariable;
     [SerializeField] float currentStamina;
     [SerializeField] float maxStamina;
@@ -28,7 +28,7 @@ public class PlayerMovement : PlayerInputManager
 
     private void Start()
     {
-        baseSpeed = player.MoveSpeed;
+        //baseSpeed = player.MoveSpeed;
         currentStamina = maxStamina;
     }
 
@@ -39,7 +39,7 @@ public class PlayerMovement : PlayerInputManager
         base.PlayerInput.Player.Move.canceled += OnMove;
         base.PlayerInput.Player.Dash.performed += OnDash;
         base.PlayerInput.Player.Dash.canceled += OnDash;
-        player.OnMoveSpeedChanged += UpdateBaseMoveSpeed;
+        //player.OnMoveSpeedChanged += UpdateBaseMoveSpeed;
     }
 
     protected override void OnDisable()
@@ -49,7 +49,7 @@ public class PlayerMovement : PlayerInputManager
         base.PlayerInput.Player.Dash.performed -= OnDash;
         base.PlayerInput.Player.Dash.canceled -= OnDash;
         base.OnDisable();
-        player.OnMoveSpeedChanged -= UpdateBaseMoveSpeed;
+        //player.OnMoveSpeedChanged -= UpdateBaseMoveSpeed;
     }
 
     private void Update()
@@ -81,12 +81,10 @@ public class PlayerMovement : PlayerInputManager
     {
         if (context.performed)
         {
-            Debug.Log("Dasking = TRUE");
             isDashing = true;
         }
         else if (context.canceled)
         {
-            Debug.Log("Dasking = FALSE");
             isDashing = false;
         }
     }
@@ -119,8 +117,8 @@ public class PlayerMovement : PlayerInputManager
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
     }
 
-    private void UpdateBaseMoveSpeed(float newBaseSpeed)
-    {
-        baseSpeed = newBaseSpeed;
-    }
+    //private void UpdateBaseMoveSpeed(float newBaseSpeed)
+    //{
+    //    baseSpeed = newBaseSpeed;
+    //}
 }

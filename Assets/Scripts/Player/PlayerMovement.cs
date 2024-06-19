@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,14 +8,18 @@ public class PlayerMovement : PlayerInputManager
 {
     [SerializeField] float baseSpeed;
     float speedVariable;
+
     [SerializeField] float currentStamina;
+    public float CurrentStamina { get { return currentStamina; } private set { currentStamina = value; OnStaminaChanged?.Invoke(currentStamina); } }
+    public event Action<float> OnStaminaChanged;
+
     [SerializeField] float maxStamina;
+    public float MaxStamina { get { return maxStamina; } private set { maxStamina = value; } }
+
     [SerializeField] float staminaRegenRate;
     [SerializeField] float staminaDepletionRate;
     [SerializeField] float dashSpeed;
     bool isDashing = false;
-
-    // Current stamina variable
 
     Vector2 moveInputValue;
 
@@ -28,8 +33,7 @@ public class PlayerMovement : PlayerInputManager
 
     private void Start()
     {
-        //baseSpeed = player.MoveSpeed;
-        currentStamina = maxStamina;
+        CurrentStamina = maxStamina;
     }
 
     protected override void OnEnable()
@@ -39,7 +43,6 @@ public class PlayerMovement : PlayerInputManager
         base.PlayerInput.Player.Move.canceled += OnMove;
         base.PlayerInput.Player.Dash.performed += OnDash;
         base.PlayerInput.Player.Dash.canceled += OnDash;
-        //player.OnMoveSpeedChanged += UpdateBaseMoveSpeed;
     }
 
     protected override void OnDisable()
@@ -49,7 +52,6 @@ public class PlayerMovement : PlayerInputManager
         base.PlayerInput.Player.Dash.performed -= OnDash;
         base.PlayerInput.Player.Dash.canceled -= OnDash;
         base.OnDisable();
-        //player.OnMoveSpeedChanged -= UpdateBaseMoveSpeed;
     }
 
     private void Update()
@@ -106,19 +108,14 @@ public class PlayerMovement : PlayerInputManager
         if (isDashing)
         {
             speedVariable = dashSpeed;
-            currentStamina -= staminaDepletionRate * Time.deltaTime;
+            CurrentStamina -= staminaDepletionRate * Time.deltaTime;
         }
         else
         {
-            currentStamina += staminaRegenRate * Time.deltaTime;
+            CurrentStamina += staminaRegenRate * Time.deltaTime;
             speedVariable = 1f;
         }
 
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
     }
-
-    //private void UpdateBaseMoveSpeed(float newBaseSpeed)
-    //{
-    //    baseSpeed = newBaseSpeed;
-    //}
 }

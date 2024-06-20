@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
-    [SerializeField] float currentHealth;
-    [SerializeField] float maxHealth;
+    [SerializeField] int currentHealth;
+    [SerializeField] int maxHealth;
 
     // LOOK INTO USING SCRIPTABLE OBJECTS FOR ENEMIES
 
-    public void TakeDamage(float damageToTake)
+    public void TakeDamage(int damageToTake)
     {
         currentHealth -= damageToTake;
 

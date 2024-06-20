@@ -9,7 +9,8 @@ public class InGamePlayerUI : MonoBehaviour
     [Header("Health")]
     [SerializeField] Transform heartsGroup;
     [SerializeField] GameObject UIHeartPrefab;
-    private List<GameObject> UIHearts = new List<GameObject>();
+    private List<GameObject> UIHeartGOs = new List<GameObject>();
+    private List<UIHeart> UIHeartScripts = new List<UIHeart>();
 
     [Header("Stamina")]
     [SerializeField] Slider staminaSlider;
@@ -45,36 +46,40 @@ public class InGamePlayerUI : MonoBehaviour
 
     private void InitializeHeartsUI()
     {
+        int currentHealth = playerHealth.CurrentHealth;
         int maxHealth = playerHealth.MaxHealth;
-        while (UIHearts.Count < maxHealth)
+        for (int i = UIHeartGOs.Count; i < maxHealth; i++)
         {
-            GameObject healthUI = Instantiate(UIHeartPrefab, heartsGroup);
-            UIHearts.Add(healthUI);
+            GameObject heartUIObj = Instantiate(UIHeartPrefab, heartsGroup);
+            UIHeartGOs.Add(heartUIObj);
+            UIHeartScripts.Add(heartUIObj.GetComponent<UIHeart>());
         }
+        UpdateCurrentHeartsUI(currentHealth);
     }
 
     void UpdateCurrentHeartsUI(int currentHealth)
     {
-        for (int i = 0; i < UIHearts.Count; i++)
+        for (int i = 0; i < UIHeartGOs.Count; i++)
         {
             if (i < currentHealth)
             {
-                UIHearts[i].SetActive(true);
+                UIHeartScripts[i].SetHeartFull();
             }
             else
             {
-                UIHearts[i].SetActive(false);
+                UIHeartScripts[i].SetHeartEmpty();
             }
         }
     }
 
     void UpdateMaxHeartsUI(int maxHealth)
     {
-        while (UIHearts.Count < maxHealth)
+        for(int i = UIHeartGOs.Count; i < maxHealth; i++)
         {
-            GameObject healthUI = Instantiate(UIHeartPrefab, heartsGroup);
-            healthUI.SetActive(false);
-            UIHearts.Add(healthUI);
+            GameObject heartUIObj = Instantiate(UIHeartPrefab, heartsGroup);
+            UIHeartGOs.Add(heartUIObj);
+            UIHeartScripts.Add(heartUIObj.GetComponent<UIHeart>());
+            UIHeartScripts[i].SetHeartEmpty();
         }
     }
 

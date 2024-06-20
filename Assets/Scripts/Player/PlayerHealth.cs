@@ -36,12 +36,37 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         CurrentHealth = maxHealth;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.O))
+        {
+            TakeDamage(1);
+        }
+        if (Input.GetKeyUp(KeyCode.P))
+        {
+            RegainHealth(1);
+        }
+        if (Input.GetKeyUp(KeyCode.L))
+        {
+            MaxHealth++;
+        }
+        if (Input.GetKeyUp(KeyCode.K))
+        {
+            RegainAllHealth();
+        }
+    }
+
     private void RegainHealth(int healthToGain)
     {
         if(currentHealth < maxHealth)
         {
             CurrentHealth += healthToGain;
         }
+    }
+
+    private void RegainAllHealth()
+    {
+        CurrentHealth = maxHealth;
     }
 
     public void TakeDamage(int damageToTake)

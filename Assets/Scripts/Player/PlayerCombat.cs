@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerCombat : PlayerInputManager
 {
-    [SerializeField] Transform firePoint;
+    public Transform firePoint;
     [SerializeField] float fireRate;
     float lastShootTime = 0f;
     private bool isShooting;
@@ -55,18 +55,16 @@ public class PlayerCombat : PlayerInputManager
         {
             if (Time.time >= lastShootTime + fireRate)
             {
-                SpawnProjectile();
+                ShootProjectile();
                 lastShootTime = Time.time;
             }
             yield return new WaitForSeconds(fireRate);
         }
     }
 
-    void SpawnProjectile()
+    void ShootProjectile()
     {
         Projectile projectile = objectPool.GetObject();
-        projectile.transform.position = firePoint.position;
-        projectile.transform.rotation = firePoint.rotation;
         projectile.ProcessShot();
     }
 }

@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour
 
     private Rigidbody2D rigidBody;
     private ObjectPool objectPool;
+    private Transform firePoint;
 
     PlayerCombat playerCombat;
     PlayerAiming playerAiming;
@@ -25,11 +26,14 @@ public class Projectile : MonoBehaviour
         playerCombat = playerCom;
         playerAiming = playerAim;
         objectPool = op;
+        firePoint = playerCombat.firePoint;
     }
 
     public void ProcessShot()
     {
         // Set values
+        transform.position = firePoint.position;
+        transform.rotation = firePoint.rotation;
         damageValue = playerCombat.ProjectileDamage;
         moveSpeed = playerCombat.ProjectileSpeed;
         lifeTime = playerCombat.ProjectileRange;

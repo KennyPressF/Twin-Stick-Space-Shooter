@@ -21,7 +21,11 @@ public class PlayerMovement : PlayerInputManager
     [SerializeField] float dashSpeed;
     bool isDashing = false;
 
+    Vector3 lastMoveDirection;
+    public Vector3 LastMoveDirection { get { return lastMoveDirection; } private set { lastMoveDirection = value; } }
+
     Vector2 moveInputValue;
+    public Vector3 MoveInputValue { get { return moveInputValue; } }
 
     Player player;
 
@@ -76,6 +80,12 @@ public class PlayerMovement : PlayerInputManager
     {
         float moveSpeed = baseSpeed * speedVariable;
         Vector3 moveDir = new Vector3(moveInputValue.x, moveInputValue.y, 0);
+
+        if (moveDir != Vector3.zero)
+        {
+            lastMoveDirection = moveDir.normalized;
+        }
+
         transform.Translate(moveDir * moveSpeed * Time.deltaTime);
     }
 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerInputManager : MonoBehaviour
 {
+    public bool IsUsingGamepad { get; set; }
+
     protected PlayerInputActions PlayerInput;
 
     protected virtual void Awake()

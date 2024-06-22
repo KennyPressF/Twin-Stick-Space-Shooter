@@ -8,7 +8,7 @@ public class PlayerCombat : PlayerInputManager
     public Transform firePoint;
     [SerializeField] float fireRate;
     float lastShootTime = 0f;
-    private bool isShooting;
+    public bool IsShooting { get; private set; }
 
     [SerializeField] int projectileDamage;
     public int ProjectileDamage { get { return projectileDamage; } private set { projectileDamage = value; } }
@@ -40,18 +40,18 @@ public class PlayerCombat : PlayerInputManager
 
     void OnShootStarted(InputAction.CallbackContext context)
     {
-        isShooting = true;
+        IsShooting = true;
         StartCoroutine(ContinuousShoot());
     }
 
     void OnShootCanceled(InputAction.CallbackContext context)
     {
-        isShooting = false;
+        IsShooting = false;
     }
 
     IEnumerator ContinuousShoot()
     {
-        while (isShooting)
+        while (IsShooting)
         {
             if (Time.time >= lastShootTime + fireRate)
             {

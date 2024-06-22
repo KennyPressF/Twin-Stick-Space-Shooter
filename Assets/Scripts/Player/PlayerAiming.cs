@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerAiming : PlayerInputManager
@@ -11,37 +12,57 @@ public class PlayerAiming : PlayerInputManager
 
     private Vector2 inputAimDir;
     private Quaternion aimDirection;
-    public Vector3 AimDirection { get => aimDirection.eulerAngles; set { aimDirection = Quaternion.Euler(value); } }
+
+    private Quaternion lastRotation;
+    private Quaternion targetRotation;
+
+    //Quaternion targetRotation;
+
+    PlayerMovement playerMovement;
+    PlayerCombat playerCombat;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        playerMovement = GetComponent<PlayerMovement>();
+        playerCombat = GetComponent<PlayerCombat>();
+    }
 
     protected override void OnEnable()
     {
         base.OnEnable();
-        base.PlayerInput.Player.Look.performed += OnLookPerformed;
+        base.PlayerInput.Player.Look.performed += OnLook;
+        base.PlayerInput.Player.Look.canceled += OnLook;
     }
 
     protected override void OnDisable()
     {
-        base.PlayerInput.Player.Look.performed -= OnLookPerformed;
+        base.PlayerInput.Player.Look.performed -= OnLook;
+        base.PlayerInput.Player.Look.canceled -= OnLook;
         base.OnDisable();
     }
 
     private void Update()
     {
-        bodySprite.transform.rotation = Quaternion.Slerp(bodySprite.transform.rotation, aimDirection, rotationSpeed * Time.deltaTime);
+        RotateBodySpriteToDirection();
     }
 
-    private void OnLookPerformed(InputAction.CallbackContext context)
+    private void OnLook(InputAction.CallbackContext context)
     {
         inputAimDir = context.ReadValue<Vector2>();
 
         if (context.control.device is Gamepad)
         {
+            base.IsUsingGamepad = true;
             UpdateAimingWithGamepad();
         }
         else if (context.control.device is Mouse)
         {
+            base.IsUsingGamepad = false;
             UpdateAimingWithMouse();
         }
+
+        lastRotation = aimDirection;
     }
 
     private void UpdateAimingWithGamepad()
@@ -49,8 +70,7 @@ public class PlayerAiming : PlayerInputManager
         if (inputAimDir.magnitude > 0.5f)
         {
             float angle = Mathf.Atan2(inputAimDir.x, inputAimDir.y) * Mathf.Rad2Deg;
-            AimDirection = new Vector3(0f, 0f, -angle); //Angle here needs to be negative
-
+            aimDirection = Quaternion.Euler(new Vector3(0f, 0f, -angle)); //Angle here needs to be negative
         }
     }
 
@@ -63,7 +83,55 @@ public class PlayerAiming : PlayerInputManager
             Vector3 direction = mouseWorldPosition - bodySprite.transform.position;
 
             float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-            AimDirection = new Vector3(0f, 0f, -angle); //Angle here needs to be negative
+            aimDirection = Quaternion.Euler(new Vector3(0f, 0f, -angle)); //Angle here needs to be negative
         }
+    }
+
+    private void RotateBodySpriteToDirection()
+    {
+        //if (playerCombat.IsShooting == false)
+        //{
+        //    if (IsUsingGamepad)
+        //    {
+        //        if (inputAimDir.magnitude > 0.1f)
+        //        {
+        //            targetRotation = aimDirection;
+        //            lastRotation = aimDirection;
+        //        }
+        //    } //NEED CHANGE AROUND HERE SO MOVE AND AIM AREN'T FIGHTING
+
+        //    if (playerMovement.MoveInputValue.magnitude > 0.1f)
+        //    {
+        //        targetRotation = Quaternion.LookRotation(Vector3.forward, playerMovement.MoveInputValue);
+        //        lastRotation = targetRotation;
+        //    }
+        //}
+        //else
+        //{
+        //    targetRotation = aimDirection;
+        //    lastRotation = aimDirection;
+        //}
+
+        if(IsUsingGamepad)
+        {
+            if(inputAimDir.magnitude != 0)
+            {
+                targetRotation = aimDirection;
+                lastRotation = aimDirection;
+            }
+            else if(playerMovement.MoveInputValue.magnitude != 0)
+            {
+                targetRotation = Quaternion.LookRotation(Vector3.forward, playerMovement.MoveInputValue);
+                lastRotation = targetRotation;
+            }
+            else
+            {
+                targetRotation = lastRotation;
+            }
+        }
+
+        //Handle Keyboard and Mouse differently depending on ifShooting is true. Also need to look into how I set IsUsingGamepad
+
+        bodySprite.transform.rotation = Quaternion.Slerp(bodySprite.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 }

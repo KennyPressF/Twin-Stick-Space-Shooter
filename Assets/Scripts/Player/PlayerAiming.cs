@@ -16,8 +16,6 @@ public class PlayerAiming : PlayerInputManager
     private Quaternion lastRotation;
     private Quaternion targetRotation;
 
-    //Quaternion targetRotation;
-
     PlayerMovement playerMovement;
     PlayerCombat playerCombat;
 
@@ -61,8 +59,6 @@ public class PlayerAiming : PlayerInputManager
             base.IsUsingGamepad = false;
             UpdateAimingWithMouse();
         }
-
-        lastRotation = aimDirection;
     }
 
     private void UpdateAimingWithGamepad()
@@ -89,35 +85,13 @@ public class PlayerAiming : PlayerInputManager
 
     private void RotateBodySpriteToDirection()
     {
-        //if (playerCombat.IsShooting == false)
-        //{
-        //    if (IsUsingGamepad)
-        //    {
-        //        if (inputAimDir.magnitude > 0.1f)
-        //        {
-        //            targetRotation = aimDirection;
-        //            lastRotation = aimDirection;
-        //        }
-        //    } //NEED CHANGE AROUND HERE SO MOVE AND AIM AREN'T FIGHTING
-
-        //    if (playerMovement.MoveInputValue.magnitude > 0.1f)
-        //    {
-        //        targetRotation = Quaternion.LookRotation(Vector3.forward, playerMovement.MoveInputValue);
-        //        lastRotation = targetRotation;
-        //    }
-        //}
-        //else
-        //{
-        //    targetRotation = aimDirection;
-        //    lastRotation = aimDirection;
-        //}
-
+        //THIS WORKS BUT GETS WEIRD WHEN SWITCHING BETWEEN GAMEPAD AND KEYBOARD. I NEED A BETTER WAY TO SET WHICH CONTROL SCHEME IS BEING USED
         if(IsUsingGamepad)
         {
             if(inputAimDir.magnitude != 0)
             {
                 targetRotation = aimDirection;
-                lastRotation = aimDirection;
+                lastRotation = targetRotation;
             }
             else if(playerMovement.MoveInputValue.magnitude != 0)
             {
@@ -129,8 +103,23 @@ public class PlayerAiming : PlayerInputManager
                 targetRotation = lastRotation;
             }
         }
-
-        //Handle Keyboard and Mouse differently depending on ifShooting is true. Also need to look into how I set IsUsingGamepad
+        else
+        {
+            if (playerCombat.IsShooting)
+            {
+                targetRotation = aimDirection;
+                lastRotation = targetRotation;
+            }
+            else if (playerMovement.MoveInputValue.magnitude != 0)
+            {
+                targetRotation = Quaternion.LookRotation(Vector3.forward, playerMovement.MoveInputValue);
+                lastRotation = targetRotation;
+            }
+            else
+            {
+                targetRotation = lastRotation;
+            }
+        }
 
         bodySprite.transform.rotation = Quaternion.Slerp(bodySprite.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }

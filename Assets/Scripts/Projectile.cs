@@ -20,11 +20,10 @@ public class Projectile : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
     }
 
-    public void Initialize(PlayerCombat playerCom, PlayerAiming playerAim, ObjectPool op)
+    public void Initialize(PlayerCombat playerCom, ObjectPool op)
     {
         //Set references when projectile is created and added to pool
         playerCombat = playerCom;
-        playerAiming = playerAim;
         objectPool = op;
         firePoint = playerCombat.firePoint;
     }
@@ -39,9 +38,7 @@ public class Projectile : MonoBehaviour
         lifeTime = playerCombat.ProjectileRange;
 
         // Calculate shot direction
-        float angle = playerAiming.AimDirection.z;
-        float angleRad = -angle * Mathf.Deg2Rad;
-        Vector2 travelDir = new Vector2(Mathf.Sin(angleRad), Mathf.Cos(angleRad)).normalized;
+        Vector2 travelDir = transform.up;
 
         rigidBody.velocity = travelDir * moveSpeed;
 

@@ -10,12 +10,10 @@ public class ObjectPool : MonoBehaviour
     private Queue<Projectile> poolQueue;
 
     PlayerCombat playerCombat;
-    PlayerAiming playerAiming;
 
     private void Awake()
     {
         playerCombat = GetComponent<PlayerCombat>();
-        playerAiming = GetComponent<PlayerAiming>();
     }
 
     void Start()
@@ -25,7 +23,7 @@ public class ObjectPool : MonoBehaviour
         {
             GameObject obj = Instantiate(projectilePrefab, poolParentGameObject);
             Projectile proj = obj.GetComponent<Projectile>();
-            proj.Initialize(playerCombat, playerAiming, this);
+            proj.Initialize(playerCombat, this);
             obj.SetActive(false);
             poolQueue.Enqueue(proj);
         }
@@ -43,7 +41,7 @@ public class ObjectPool : MonoBehaviour
         {
             GameObject obj = Instantiate(projectilePrefab, poolParentGameObject);
             Projectile proj = obj.GetComponent<Projectile>();
-            proj.Initialize(playerCombat, playerAiming, this);
+            proj.Initialize(playerCombat, this);
             obj.SetActive(true);
             return proj;
         }

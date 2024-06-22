@@ -103,27 +103,15 @@ public class PlayerMovement : PlayerInputManager
 
     private void ProcessDash()
     {
-        if (isDashing == false && currentStamina >= maxStamina)
-        {
-            speedVariable = 1f;
-            return;
-        }
-
-        if (isDashing && currentStamina <= 0)
-        {
-            speedVariable = 1f;
-            return;
-        }
-
-        if (isDashing)
+        if (isDashing && currentStamina > 0)
         {
             speedVariable = dashSpeed;
             CurrentStamina -= staminaDepletionRate * Time.deltaTime;
         }
         else
         {
-            CurrentStamina += staminaRegenRate * Time.deltaTime;
             speedVariable = 1f;
+            CurrentStamina += staminaRegenRate * Time.deltaTime;
         }
 
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
